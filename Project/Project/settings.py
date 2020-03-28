@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat',
-    'channels'
+    'channels',
+    'accounts',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -62,18 +64,23 @@ TEMPLATES = [
 #WSGI_APPLICATION = 'Project.wsgi.application'
 ASGI_APPLICATION='Project.routing.application'
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
         },
     },
 }
-'''CHANNEL_LAYERS = {
+
+
+
+
+'''CACHES = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [(os.environ.get('REDIS_HOST', 'localhost'),6379)],
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION':'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
         },
     },
 }'''
@@ -125,3 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS=[
+os.path.join(BASE_DIR,'static')
+]
+CRISPY_TEMPLATE_PACK='bootstrap4'
+LOGIN_URL='/'
+LOGIN_REDIRECT_URL='/chat/'
